@@ -9,6 +9,9 @@ mydb = mysql.connector.connect(
 )
 print(mydb)
 # First thing it does is should play music so I know if its on
+# Add Skip
+# Add random shuffle
+# add power hour feature? Plays song for a minute
 
 mycursor = mydb.cursor()
 mixer.init()
