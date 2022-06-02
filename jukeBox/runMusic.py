@@ -8,6 +8,7 @@ mydb = mysql.connector.connect(
   database='pibox'
 )
 print(mydb)
+# Doesnt auto increment primary key like expected? If get an error inserting it still increments
 # First thing it does is should play music so I know if its on
 # Add Skip
 # Add random shuffle
