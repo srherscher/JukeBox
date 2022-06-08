@@ -3,8 +3,8 @@ Create database IF NOT EXISTS PiBox
 
 Create TABLE IF NOT EXISTS pibox.songs (
 	SongId INTEGER PRIMARY KEY AUTO_INCREMENT,
-    SongName varchar(30) not null,
-    FilePath varchar(40),
+    SongName varchar(50) not null,
+    FilePath varchar(50),
     ArtistName varchar(30),
     Decade varchar(30),
     unique (SongName)
