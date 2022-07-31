@@ -28,7 +28,7 @@ for path in os.listdir(dir_path):
             songUrl = dir_path + "/" + path
             songName = path[:-4]
             songList.append([songName, songUrl, artist])
-newSongList = sorted(songList,key=lambda x: x[2])
+newSongList = sorted(songList,key=lambda x: x[2].casefold())
 
 for songInfo in newSongList:
     mycursor.execute("SELECT * FROM songs WHERE SongName = '" + songInfo[0] + "'")
