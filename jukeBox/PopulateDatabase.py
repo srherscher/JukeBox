@@ -4,7 +4,6 @@ import mysql.connector
 import time
 from tinytag import TinyTag
 
-
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -16,6 +15,7 @@ print(mydb)
 # if it fails with unicode error, change aroud the slashes
 dir_path = 'C:/Users/Scott/Desktop/Songs/SpotiFlyer/Playlists/JukeboxSongs'
 mycursor = mydb.cursor()
+songList = []
 
 # Iterate directory
 for path in os.listdir(dir_path):
@@ -27,21 +27,23 @@ for path in os.listdir(dir_path):
             artist = a_tag.artist
             songUrl = dir_path + "/" + path
             songName = path[:-4]
-            mycursor.execute("SELECT * FROM songs WHERE SongName = '" + songName + "'")
-            retrievedSongRecord = mycursor.fetchone()
-            print(retrievedSongRecord)
-            if retrievedSongRecord is None:
+            songList.append([songName, songUrl, artist])
+newSongList = sorted(songList,key=lambda x: x[2])
 
-                query = "Insert into songs (SongName, FilePath, ArtistName, Decade) Values ('" + songName + "', '" + songUrl + "', '" + artist +"', 'null')"
+for songInfo in newSongList:
+    mycursor.execute("SELECT * FROM songs WHERE SongName = '" + songInfo[0] + "'")
+    retrievedSongRecord = mycursor.fetchone()
+    print("Retrieved Record:", retrievedSongRecord)
+    if retrievedSongRecord is None:
+        songInfoName = songInfo[0]
+        query = "Insert into songs (SongName, FilePath, ArtistName, Decade) Values ('" + songInfo[0] + "', '" + \
+                songInfo[1] + "', '" + songInfo[2] + "', 'null')"
+        try:
+            mycursor.execute(query)
+            mydb.commit()
+            print("Committing")
+        except:
+            print("Song ALready Inserted")
 
-                # print(path)
-                # print(path[:-4])
-                try:
-                    mycursor.execute(query)
-                    mydb.commit()
-                    print("Committing")
-                except:
-                    print("Song ALready Inserted")
-
-            else:
-                print("Song Already Exists in Database")
+    else:
+        print("Song Already Exists in Database")
